@@ -12,7 +12,7 @@ const Cart = () => {
   let auth = JSON.parse(authString);
 
   const handleCart = async (product_id, user_id, price, quantity) => {
-    axios.put("http://localhost:8080/api/cart", {
+    axios.put("/api/cart", {
       product_id,
       user_id,
       quantity,
@@ -31,12 +31,18 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    navigate("/payment", { state: calculateTotalPrice() });
+    navigate("/payment", {
+      state: {
+        totalPrice: calculateTotalPrice(),
+        carts,
+        pathName: window.location.pathname,
+      },
+    });
   };
 
   const getAllCarts = async () => {
     try {
-      const { data } = await axios.post("http://localhost:8080/api/all-carts", {
+      const { data } = await axios.post("/api/all-carts", {
         user_id: auth?.user._id,
       });
 
@@ -48,7 +54,7 @@ const Cart = () => {
 
   const handleDeleteCart = async (product_id, user_id) => {
     console.log("deleted");
-    const { data } = await axios.post("http://localhost:8080/api/delete-cart", {
+    const { data } = await axios.post("/api/delete-cart", {
       product_id: product_id,
       user_id: user_id,
     });
@@ -65,12 +71,12 @@ const Cart = () => {
 
   return (
     <Layout>
-      <section className="h-screen py-12 sm:py-16 lg:py-1">
+      <section className="mb-12 py-12 sm:py-16 lg:py-1">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center">
             <h1 className="text-2xl font-semibold text-gray-900 ">Your Cart</h1>
           </div>
-          <div className="mx-auto mt-8 max-w-2xl md:mt-12">
+          <div className="mx-auto mt-8 max-w-2xl md:mt-8">
             <div className="bg-white shadow">
               <div className="px-4 py-6 sm:px-8 sm:py-10">
                 <div className="flow-root">

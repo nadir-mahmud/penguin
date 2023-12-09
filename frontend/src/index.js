@@ -5,16 +5,19 @@ import "./index.css";
 import App from "./App";
 import { HomeProvider } from "./context/HomeContext";
 import { SearchProvider } from "./context/SearchContext";
+import { SearchDisableProvider } from "./context/SearchDisableContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <SearchProvider>
-    <HomeProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </HomeProvider>
-  </SearchProvider>
+  <SearchDisableProvider>
+    <SearchProvider>
+      <HomeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </HomeProvider>
+    </SearchProvider>
+  </SearchDisableProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

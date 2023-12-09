@@ -86,3 +86,24 @@ export const deleteCartController = async (req, res) => {
     console.error("Error:", error.message);
   }
 };
+
+export const deleteManyCartController = async (req, res) => {
+  try {
+    const carts = req.body;
+    const cartsDeleted = await cartModel.deleteMany(carts);
+    res.status(200).send({
+      success: true,
+
+      message: "All Carts deleted",
+      cartsDeleted,
+    });
+
+    if (cartsDeleted.deletedCount >= 1) {
+      console.log("Document deleted successfully.");
+    } else {
+      console.log("Document not found.");
+    }
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+};

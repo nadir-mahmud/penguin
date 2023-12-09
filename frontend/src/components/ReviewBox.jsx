@@ -4,6 +4,7 @@ import axios from "axios";
 const ReviewBox = ({ id, userId, userName }) => {
   const [showSuccessComponent, setShowSuccessComponent] = useState(false);
   const [showWarningComponent, setShowWarningComponent] = useState(false);
+  const [reviewWarningComponent, setReviewWarningComponent] = useState(false);
   const [ratingColor, setRatingColor] = useState([
     "text-gray-400",
     "text-gray-400",
@@ -84,17 +85,26 @@ const ReviewBox = ({ id, userId, userName }) => {
     }
   };
 
-  console.log(userId);
-
   const handleReview = async (rating) => {
-    await axios.put("http://localhost:8080/api/review/update", {
-      product_id: id,
-      user_id: userId,
-      user_name: userName,
-      review: review,
-      stars: rating,
-    });
-    setRating(rating);
+    if (review) {
+      await axios.put("/api/review/update", {
+        product_id: id,
+        user_id: userId,
+        user_name: userName,
+        review: review,
+        stars: rating,
+      });
+      setRating(rating);
+      setReview("");
+    } else {
+      await axios.put("/api/review/update", {
+        product_id: id,
+        user_id: userId,
+        user_name: userName,
+        stars: rating,
+      });
+      setRating(rating);
+    }
   };
 
   const handleReviewSuccess = () => {
@@ -117,6 +127,15 @@ const ReviewBox = ({ id, userId, userName }) => {
       }, 2000);
     }
   }, [showWarningComponent]);
+
+  useEffect(() => {
+    if (reviewWarningComponent) {
+      const toRef = setTimeout(() => {
+        setReviewWarningComponent(false);
+        clearTimeout(toRef);
+      }, 2000);
+    }
+  }, [reviewWarningComponent]);
 
   return (
     <>
@@ -170,11 +189,12 @@ const ReviewBox = ({ id, userId, userName }) => {
           onClick={(e) => {
             if (rating !== 0) {
               handleReview(rating);
-              if (initialText.target.value) {
+              if (review !== "") {
+                initialText.target.value = "";
                 setShowSuccessComponent(true);
+              } else {
+                setReviewWarningComponent(true);
               }
-
-              initialText.target.value = "";
             } else {
               setShowWarningComponent(true);
             }
@@ -198,6 +218,15 @@ const ReviewBox = ({ id, userId, userName }) => {
             role="alert"
           >
             <span class="font-medium">Please rate the product first!</span>
+          </div>
+        ) : null}
+
+        {reviewWarningComponent ? (
+          <div
+            class="p-4 mt-6 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
+            role="alert"
+          >
+            <span class="font-medium">Please write a review!</span>
           </div>
         ) : null}
       </div>

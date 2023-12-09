@@ -31,7 +31,7 @@ const Product = ({
   const handleCart = async () => {
     setToaster(true);
     if (user_id) {
-      const { data } = await axios.put("http://localhost:8080/api/cart", {
+      const { data } = await axios.put("/api/cart", {
         product_id,
         product_name,
         product_photo,
@@ -55,7 +55,17 @@ const Product = ({
 
   const handleBuy = () => {
     if (user_id) {
-      navigate("/payment", { state: quantity * price });
+      navigate("/payment", {
+        state: {
+          totalPrice: quantity * price,
+          pathName: window.location.pathname,
+          product_description,
+          product_name,
+          product_id,
+          user_id,
+          quantity,
+        },
+      });
     } else {
       navigate("/login");
     }

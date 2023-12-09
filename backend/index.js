@@ -8,6 +8,7 @@ import productRoutes from "./routes/productRoute.js";
 import reviewRoutes from "./routes/reviewRoute.js";
 import cartRoutes from "./routes/cartRoute.js";
 import searchRoutes from "./routes/searchRoute.js";
+import orderRoutes from "./routes/orderRoute.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use("/api/review", reviewRoutes);
 app.use("/api/product", reviewRoutes);
 app.use("/api", cartRoutes);
 app.use("/api/search", searchRoutes);
+app.use("/api", orderRoutes);
 
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to ecommerce app</h1>");

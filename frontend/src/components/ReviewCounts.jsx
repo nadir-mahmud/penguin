@@ -11,25 +11,22 @@ const ReviewCounts = ({
   product_id,
 }) => {
   const updateRating = async (req, res) => {
-    const update = await axios.put(
-      "http://localhost:8080/api/products/update",
-      {
-        _id: product_id,
-        rating: totalReviews
-          ? Math.round(
-              parseFloat(
-                (1 * oneStar +
-                  2 * twoStar +
-                  3 * threeStar +
-                  4 * fourStar +
-                  5 * fiveStar) /
-                  totalReviews
-              ).toPrecision(2)
-            )
-          : 0,
-        totalReviews,
-      }
-    );
+    const update = await axios.put("/api/products/update", {
+      _id: product_id,
+      rating: totalReviews
+        ? Math.round(
+            parseFloat(
+              (1 * oneStar +
+                2 * twoStar +
+                3 * threeStar +
+                4 * fourStar +
+                5 * fiveStar) /
+                totalReviews
+            ).toPrecision(2)
+          )
+        : 0,
+      totalReviews,
+    });
   };
   useEffect(() => {
     updateRating();

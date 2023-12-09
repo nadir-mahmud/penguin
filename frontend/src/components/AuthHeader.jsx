@@ -1,12 +1,75 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useHome } from "../context/HomeContext";
+import { useSearch } from "../context/SearchContext";
+import { useSearchDisable } from "../context/SearchDisableContext";
 
 const AuthHeader = () => {
   const [logout, setLogout] = useState(false);
+  const [checkHome, setCheckHome] = useHome();
+  const [searchedProduct, setSearchedProduct] = useSearch();
+  const [isSearchDisabled, setIsSearchDisabled] = useSearchDisable();
+
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.removeItem("auth");
-    //window.location.reload(false);
+    setLogout(true);
+    navigate("/");
+    window.location.reload();
   };
+
+  const handleSearch = async (e) => {
+    console.log(e);
+    if (e.length === 0) {
+      const newURL = "/";
+
+      window.history.pushState({ path: newURL }, "", newURL);
+      setCheckHome(false);
+    } else {
+      const newURL = "/search";
+      window.history.pushState({ path: newURL }, "", newURL);
+      const { data } = await axios.post("/api/search", {
+        name: e,
+      });
+      setSearchedProduct(data.products);
+      console.log(data.products);
+      setCheckHome(true);
+    }
+  };
+
+  const handleHomeLink = () => {
+    setIsSearchDisabled(false);
+    if (window.location.pathname === "/search") {
+      const newURL = "/";
+      window.history.pushState({ path: newURL }, "", newURL);
+      //setSearchState("");
+      window.location.reload();
+    }
+  };
+
+  const handleOrderLink = () => {
+    setIsSearchDisabled(true);
+    if (window.location.pathname === "/search") {
+      const newURL = "/";
+      window.history.pushState({ path: newURL }, "", newURL);
+      //setSearchState("");
+      window.location.reload();
+    }
+  };
+
+  const handleCartLink = () => {
+    setIsSearchDisabled(true);
+    if (window.location.pathname === "/search") {
+      const newURL = "/cart";
+      window.history.pushState({ path: newURL }, "", newURL);
+      //setSearchState("");
+      window.location.reload();
+    }
+  };
+
+  useEffect(() => {}, [handleLogout]);
 
   return (
     <>
@@ -67,6 +130,8 @@ const AuthHeader = () => {
                 <span className="sr-only">Search icon</span>
               </div>
               <input
+                onChange={(e) => handleSearch(e.target.value)}
+                disabled={isSearchDisabled}
                 type="text"
                 id="search-navbar"
                 className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -121,6 +186,8 @@ const AuthHeader = () => {
                 </svg>
               </div>
               <input
+                onChange={(e) => handleSearch(e.target.value)}
+                disabled={isSearchDisabled}
                 type="text"
                 id="search-navbar"
                 className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -130,6 +197,7 @@ const AuthHeader = () => {
             <ul className=" flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-purple-400 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-purple-400 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
                 <NavLink
+                  onClick={handleHomeLink}
                   to="/"
                   className="block py-2 pl-3 pr-4 text-white  rounded md:bg-transparent md:text-white  md:focus:text-rose-300 md:p-0 md:dark:text-white"
                   aria-current="page"
@@ -139,19 +207,31 @@ const AuthHeader = () => {
               </li>
               <li>
                 <NavLink
+                  onClick={handleOrderLink}
+                  to="/order"
+                  className="block py-2 pl-3 pr-4 text-white  rounded md:bg-transparent md:text-white  md:focus:text-rose-300 md:p-0 md:dark:text-white"
+                  aria-current="page"
+                >
+                  Order
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  onClick={handleCartLink}
+                  to="/cart"
+                  className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:text-white md:hover:bg-transparent md:focus:text-rose-300 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  Cart
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   onClick={handleLogout}
                   to="/"
                   className="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:focus:text-rose-300 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   Logout
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/cart"
-                  className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:text-white md:hover:bg-transparent md:focus:text-rose-300 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Cart
                 </NavLink>
               </li>
             </ul>

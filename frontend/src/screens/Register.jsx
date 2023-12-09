@@ -24,14 +24,11 @@ const Register = () => {
     if (reenterpassword === password) {
       try {
         console.log("enter!!");
-        const res = await axios.post(
-          "http://localhost:8080/api/auth/register",
-          {
-            name,
-            email,
-            password,
-          }
-        );
+        const res = await axios.post("/api/auth/register", {
+          name,
+          email,
+          password,
+        });
         if (res && res.data.success) {
           toast.success("Succefully registered. Pl");
           localStorage.setItem("auth", JSON.stringify(res.data));

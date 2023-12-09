@@ -8,6 +8,7 @@ import ReviewBox from "../components/ReviewBox";
 import Product from "../components/Product";
 
 const ProductDetails = () => {
+  const [order, setOrder] = useState({});
   const [reviews, setReviews] = useState([]);
   const [totalReviews, setTotalReviews] = useState(0);
   const [oneStar, setOneStar] = useState(0);
@@ -23,10 +24,9 @@ const ProductDetails = () => {
 
   const getAllReviews = async () => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:8080/api/product/reviews",
-        { product_id: state._id }
-      );
+      const { data } = await axios.post("/api/product/reviews", {
+        product_id: state._id,
+      });
 
       setReviews(data.reviews);
       setOneStar(data.reviews.filter((review) => review.stars === 1).length);
@@ -40,6 +40,25 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
+
+  const getOrders = async () => {
+    try {
+      const { data } = await axios.post("/api/orders", {
+        product_id: state._id,
+        user_id: auth?.user._id,
+      });
+
+      console.log(data);
+
+      setOrder(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   useEffect(() => {
     getAllReviews();
@@ -76,10 +95,11 @@ const ProductDetails = () => {
           fiveStar={fiveStar}
           product_id={state._id}
         />
-        {auth?.token ? (
+
+        {auth?.token && order.success ? (
           <ReviewBox
             id={state._id}
-            userId={auth.user._id}
+            userId={auth?.user._id}
             userName={auth.user.name}
           />
         ) : null}

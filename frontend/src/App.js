@@ -11,6 +11,7 @@ import ProductReviews from "./components/ProductReviews";
 import Cart from "./screens/Cart";
 import Payment from "./screens/Payment";
 import Search from "./screens/Search";
+import Order from "./screens/Order";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
 
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/order" element={<Order />} />
         <Route path="/product-details/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/payment" element={<Payment />} />

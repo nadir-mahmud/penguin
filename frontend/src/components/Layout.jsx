@@ -10,9 +10,7 @@ const Layout = ({ children }) => {
   return (
     <>
       {auth?.token ? <AuthHeader /> : <InitialHeader />}
-      <main className="main-content h-auto " style={{ height: "auto" }}>
-        {children}
-      </main>
+      <main className="min-h-screen lg:min-h-[78vh]">{children}</main>
       <Footer />
     </>
   );
