@@ -10,6 +10,8 @@ const AuthHeader = () => {
   const [checkHome, setCheckHome] = useHome();
   const [searchedProduct, setSearchedProduct] = useSearch();
   const [isSearchDisabled, setIsSearchDisabled] = useSearchDisable();
+  const [expanded, setExapanded] = useState(false);
+  const [toggle, setToggle] = useState("navbar-search");
 
   const navigate = useNavigate();
 
@@ -18,6 +20,11 @@ const AuthHeader = () => {
     setLogout(true);
     navigate("/");
     window.location.reload();
+  };
+
+  const handleExpanded = () => {
+    console.log(expanded);
+    expanded ? setExapanded(false) : setExapanded(true);
   };
 
   const handleSearch = async (e) => {
@@ -69,7 +76,7 @@ const AuthHeader = () => {
     }
   };
 
-  useEffect(() => {}, [handleLogout]);
+  useEffect(() => {}, [handleLogout, handleExpanded]);
 
   return (
     <>
@@ -87,10 +94,12 @@ const AuthHeader = () => {
           </NavLink>
           <div className="flex md:order-2">
             <button
+              onClick={handleExpanded}
+              onTouchStart={handleExpanded}
               type="button"
-              data-collapse-toggle="navbar-search"
+              data-collapse-toggle={toggle}
               aria-controls="navbar-search"
-              aria-expanded="true"
+              aria-expanded={expanded}
               className="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 mr-1"
             >
               <svg
@@ -143,7 +152,7 @@ const AuthHeader = () => {
               type="button"
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
               aria-controls="navbar-search"
-              aria-expanded="false"
+              aria-expanded={expanded}
             >
               <span className="sr-only">Open main menu</span>
               <svg

@@ -6,6 +6,7 @@ import App from "./App";
 import { HomeProvider } from "./context/HomeContext";
 import { SearchProvider } from "./context/SearchContext";
 import { SearchDisableProvider } from "./context/SearchDisableContext";
+import "flowbite";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
