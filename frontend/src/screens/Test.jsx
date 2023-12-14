@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const PrivateTest = () => {
+const Test = () => {
   return (
     <header className="shadow mb-2">
       <div className="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-4 md:mx-auto md:flex-row md:items-center">
@@ -54,10 +54,10 @@ const PrivateTest = () => {
         >
           <ul className="flex flex-col items-center space-y-2 md:ml-auto md:flex-row md:space-y-0">
             <li className="text-gray-600 md:mr-12 hover:text-blue-600">
-              <a href="#">Pricing</a>
+              <NavLink to="/test">Pricing</NavLink>
             </li>
             <li className="text-gray-600 md:mr-12 hover:text-blue-600">
-              <NavLink to="/test2">Features</NavLink>
+              <a href="#">Features</a>
             </li>
             <li className="text-gray-600 md:mr-12 hover:text-blue-600">
               <a href="#">Support</a>
@@ -74,4 +74,4 @@ const PrivateTest = () => {
   );
 };
 
-export default PrivateTest;
+export default Test;
