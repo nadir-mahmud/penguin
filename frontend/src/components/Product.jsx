@@ -31,15 +31,18 @@ const Product = ({
   const handleCart = async () => {
     setToaster(true);
     if (user_id) {
-      const { data } = await axios.put("/api/cart", {
-        product_id,
-        product_name,
-        product_photo,
-        product_description,
-        user_id,
-        quantity,
-        totalPrice: quantity * price,
-      });
+      const { data } = await axios.put(
+        "https://penguin-alpha.vercel.app/api/cart",
+        {
+          product_id,
+          product_name,
+          product_photo,
+          product_description,
+          user_id,
+          quantity,
+          totalPrice: quantity * price,
+        }
+      );
       console.log("toast");
 
       if (data?.success) {

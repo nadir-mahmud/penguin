@@ -24,9 +24,12 @@ const ProductDetails = () => {
 
   const getAllReviews = async () => {
     try {
-      const { data } = await axios.post("/api/product/reviews", {
-        product_id: state._id,
-      });
+      const { data } = await axios.post(
+        "https://penguin-alpha.vercel.app/api/product/reviews",
+        {
+          product_id: state._id,
+        }
+      );
 
       setReviews(data.reviews);
       setOneStar(data.reviews.filter((review) => review.stars === 1).length);
@@ -43,10 +46,13 @@ const ProductDetails = () => {
 
   const getOrders = async () => {
     try {
-      const { data } = await axios.post("/api/orders", {
-        product_id: state._id,
-        user_id: auth?.user._id,
-      });
+      const { data } = await axios.post(
+        "https://penguin-alpha.vercel.app/api/orders",
+        {
+          product_id: state._id,
+          user_id: auth?.user._id,
+        }
+      );
 
       console.log(data);
 

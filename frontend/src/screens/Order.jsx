@@ -13,9 +13,12 @@ const Order = ({ user_id }) => {
 
   const getAllOrders = async () => {
     try {
-      const { data } = await axios.post("/api/orders", {
-        user_id: auth?.user._id,
-      });
+      const { data } = await axios.post(
+        "https://penguin-alpha.vercel.app/api/orders",
+        {
+          user_id: auth?.user._id,
+        }
+      );
 
       setOrders(data.orders);
     } catch (error) {

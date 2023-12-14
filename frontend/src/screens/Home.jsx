@@ -84,7 +84,9 @@ export default function Home() {
 
   const getAllProducts = async () => {
     try {
-      const { data } = await axios.get("/api/products/all");
+      const { data } = await axios.get(
+        "https://penguin-alpha.vercel.app/api/products/all"
+      );
 
       setProducts(data.products);
       let fetchingCategoroy = [];

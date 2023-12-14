@@ -87,7 +87,7 @@ const ReviewBox = ({ id, userId, userName }) => {
 
   const handleReview = async (rating) => {
     if (review) {
-      await axios.put("/api/review/update", {
+      await axios.put("https://penguin-alpha.vercel.app/api/review/update", {
         product_id: id,
         user_id: userId,
         user_name: userName,
@@ -97,7 +97,7 @@ const ReviewBox = ({ id, userId, userName }) => {
       setRating(rating);
       setReview("");
     } else {
-      await axios.put("/api/review/update", {
+      await axios.put("https://penguin-alpha.vercel.app/api/review/update", {
         product_id: id,
         user_id: userId,
         user_name: userName,

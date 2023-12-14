@@ -16,21 +16,27 @@ const Payment = () => {
 
   const handlePlaceOrder = async () => {
     if (state.pathName === "/cart") {
-      const { data } = await axios.post("/api/insert-orders", state.carts);
+      const { data } = await axios.post(
+        "https://penguin-alpha.vercel.app/api/insert-orders",
+        state.carts
+      );
       console.log(data.orderInserted);
       const { deletedCount } = await axios.delete(
-        "/api/delete-many-cart",
+        "https://penguin-alpha.vercel.app/api/delete-many-cart",
         state.carts
       );
       console.log(deletedCount);
     } else {
-      const { data } = await axios.post("/api/insert-orders", {
-        product_id: state.product_id,
-        user_id: state.user_id,
-        product_name: state.product_name,
-        totalPrice: state.totalPrice + 8,
-        quantity: state.quantity,
-      });
+      const { data } = await axios.post(
+        "https://penguin-alpha.vercel.app/api/insert-orders",
+        {
+          product_id: state.product_id,
+          user_id: state.user_id,
+          product_name: state.product_name,
+          totalPrice: state.totalPrice + 8,
+          quantity: state.quantity,
+        }
+      );
       console.log(data.orderInserted);
     }
   };

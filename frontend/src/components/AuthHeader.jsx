@@ -35,9 +35,12 @@ const AuthHeader = () => {
     } else {
       const newURL = "/search";
       window.history.pushState({ path: newURL }, "", newURL);
-      const { data } = await axios.post("/api/search", {
-        name: e,
-      });
+      const { data } = await axios.post(
+        "https://penguin-alpha.vercel.app/api/search",
+        {
+          name: e,
+        }
+      );
       setSearchedProduct(data.products);
       console.log(data.products);
       setCheckHome(true);
