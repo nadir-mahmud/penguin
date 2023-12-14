@@ -11,7 +11,9 @@ const AuthHeader = () => {
   const [searchedProduct, setSearchedProduct] = useSearch();
   const [isSearchDisabled, setIsSearchDisabled] = useSearchDisable();
   const [expanded, setExapanded] = useState(false);
-  const [toggle, setToggle] = useState("navbar-search");
+  const [toggle, setToggle] = useState(
+    "items-center justify-between hidden w-full md:flex md:w-auto md:order-1 hidden"
+  );
 
   const navigate = useNavigate();
 
@@ -23,7 +25,6 @@ const AuthHeader = () => {
   };
 
   const handleExpanded = () => {
-    console.log(expanded);
     expanded ? setExapanded(false) : setExapanded(true);
   };
 
@@ -96,9 +97,9 @@ const AuthHeader = () => {
             <button
               onClick={handleExpanded}
               type="button"
-              data-collapse-toggle={toggle}
+              data-collapse-toggle="navbar-search"
               aria-controls="navbar-search"
-              aria-expanded={expanded}
+              aria-expanded="false"
               className="md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 mr-1"
             >
               <svg
@@ -147,11 +148,12 @@ const AuthHeader = () => {
               />
             </div>
             <button
+              onClick={handleExpanded}
               data-collapse-toggle="navbar-search"
               type="button"
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
               aria-controls="navbar-search"
-              aria-expanded={expanded}
+              aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
               <svg
@@ -172,7 +174,11 @@ const AuthHeader = () => {
             </button>
           </div>
           <div
-            className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+            className={
+              expanded
+                ? "items-center justify-between w-full md:flex md:w-auto md:order-1"
+                : "items-center justify-between hidden w-full md:flex md:w-auto md:order-1 "
+            }
             id="navbar-search"
           >
             <div className="relative mt-3 md:hidden">
