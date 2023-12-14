@@ -95,7 +95,6 @@ const AuthHeader = () => {
           <div className="flex md:order-2">
             <button
               onClick={handleExpanded}
-              onTouchStart={handleExpanded}
               type="button"
               data-collapse-toggle={toggle}
               aria-controls="navbar-search"
