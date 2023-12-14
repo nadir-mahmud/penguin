@@ -10,6 +10,11 @@ const InitialHeader = () => {
   const [checkHome, setCheckHome] = useHome();
   const [searchedProduct, setSearchedProduct] = useSearch();
   const [isSearchDisabled, setIsSearchDisabled] = useSearchDisable();
+  const [expanded, setExapanded] = useState(false);
+
+  const handleExpanded = () => {
+    expanded ? setExapanded(false) : setExapanded(true);
+  };
 
   const handleSearch = async (e) => {
     console.log(e);
@@ -80,6 +85,7 @@ const InitialHeader = () => {
           </NavLink>
           <div className="flex md:order-2">
             <button
+              onClick={handleExpanded}
               type="button"
               data-collapse-toggle="navbar-search"
               aria-controls="navbar-search"
@@ -134,6 +140,7 @@ const InitialHeader = () => {
               />
             </div>
             <button
+              onClick={handleExpanded}
               data-collapse-toggle="navbar-search"
               type="button"
               className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -159,7 +166,11 @@ const InitialHeader = () => {
             </button>
           </div>
           <div
-            className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+            className={
+              expanded
+                ? "items-center justify-between w-full md:flex md:w-auto md:order-1"
+                : "items-center justify-between hidden w-full md:flex md:w-auto md:order-1 "
+            }
             id="navbar-search"
           >
             <div className="relative mt-3 md:hidden">

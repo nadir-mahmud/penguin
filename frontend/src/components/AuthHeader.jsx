@@ -11,9 +11,6 @@ const AuthHeader = () => {
   const [searchedProduct, setSearchedProduct] = useSearch();
   const [isSearchDisabled, setIsSearchDisabled] = useSearchDisable();
   const [expanded, setExapanded] = useState(false);
-  const [toggle, setToggle] = useState(
-    "items-center justify-between hidden w-full md:flex md:w-auto md:order-1 hidden"
-  );
 
   const navigate = useNavigate();
 
