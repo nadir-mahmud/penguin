@@ -7,6 +7,7 @@ import { HomeProvider } from "./context/HomeContext";
 import { SearchProvider } from "./context/SearchContext";
 import { SearchDisableProvider } from "./context/SearchDisableContext";
 import "flowbite";
+import ScrollToTop from "./route/ScrollToTop";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

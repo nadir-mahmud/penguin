@@ -53,7 +53,7 @@ const Login = () => {
         />
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center justify-center  "
+          className="flex flex-col items-center justify-center   "
           style={{ minHeight: "78vh" }}
         >
           <div

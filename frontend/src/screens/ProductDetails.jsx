@@ -6,6 +6,7 @@ import ProductReviews from "../components/ProductReviews";
 import ReviewCounts from "../components/ReviewCounts";
 import ReviewBox from "../components/ReviewBox";
 import Product from "../components/Product";
+import ScrollToTop from "../route/ScrollToTop";
 
 const ProductDetails = () => {
   const [order, setOrder] = useState({});
@@ -72,6 +73,7 @@ const ProductDetails = () => {
 
   return (
     <>
+      <ScrollToTop />
       <Layout>
         <Product
           product_id={state._id}

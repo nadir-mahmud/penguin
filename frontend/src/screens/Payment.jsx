@@ -1,18 +1,48 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { cloneElement, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
 const Payment = () => {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [payment, setPayment] = useState({
+    email: "",
+    cardHolder: "",
+    cardNo: "",
+    cardExpiry: "",
+    cardCVC: "",
+    billingAddress: "",
+    billingZip: "",
+  });
 
-  console.log(state.pathName);
+  const payment1 = {
+    email: "nadirmahmud9@gmail.com",
+    cardHolder: "nadir mahmud",
+    cardNo: "5518",
+    cardExpiry: "24/10",
+    cardCVC: "119",
+    billingAddress: "MMC",
+    billingZip: "6348",
+  };
+
+  const payment2 = {
+    email: "nadirmahmud5@gmail.com",
+    cardHolder: "RAWNAK TASNIM",
+    cardNo: "6348",
+    cardExpiry: "9/7",
+    cardCVC: "110",
+    billingAddress: "CU",
+    billingZip: "1823",
+  };
+
+  console.log(payment);
 
   const handlePlaceOrder = async () => {
     if (state.pathName === "/cart") {
@@ -29,20 +59,55 @@ const Payment = () => {
     } else {
       const { data } = await axios.post(
         "https://penguin-alpha.vercel.app/api/insert-orders",
-        {
-          product_id: state.product_id,
-          user_id: state.user_id,
-          product_name: state.product_name,
-          totalPrice: state.totalPrice + 8,
-          quantity: state.quantity,
-        }
+        [
+          {
+            product_id: state.product_id,
+            user_id: state.user_id,
+            product_name: state.product_name,
+            totalPrice: state.totalPrice + 8,
+            quantity: state.quantity,
+          },
+        ]
       );
       console.log(data.orderInserted);
     }
+    navigate("/order");
+  };
+
+  const handlePaymentInfo = () => {
+    if (
+      payment1.email === payment.email &&
+      payment1.cardHolder === payment.cardHolder &&
+      payment1.cardNo === payment.cardNo &&
+      payment1.cardExpiry === payment.cardExpiry &&
+      payment1.cardCVC === payment.cardCVC &&
+      payment1.billingAddress === payment.billingAddress &&
+      payment1.billingZip === payment.billingZip
+    ) {
+      return true;
+    }
+
+    if (
+      payment2.email === payment.email &&
+      payment2.cardHolder === payment.cardHolder &&
+      payment2.cardNo === payment.cardNo &&
+      payment2.cardExpiry === payment.cardExpiry &&
+      payment2.cardCVC === payment.cardCVC &&
+      payment2.billingAddress === payment.billingAddress &&
+      payment2.billingZip === payment.billingZip
+    ) {
+      return true;
+    }
+
+    return false;
   };
 
   const onSubmit = () => {
-    handlePlaceOrder();
+    if (handlePaymentInfo()) {
+      handlePlaceOrder();
+    } else {
+      console.log(handlePaymentInfo());
+    }
   };
 
   return (
@@ -71,6 +136,9 @@ const Payment = () => {
                       message: "Invalid email address",
                     },
                   })}
+                  onChange={(e) =>
+                    setPayment((prev) => ({ ...prev, email: e.target.value }))
+                  }
                   type="text"
                   id="email"
                   name="email"
@@ -108,6 +176,12 @@ const Payment = () => {
               <div className="relative">
                 <input
                   {...register("cardholder", { required: true })}
+                  onChange={(e) =>
+                    setPayment((prev) => ({
+                      ...prev,
+                      cardHolder: e.target.value,
+                    }))
+                  }
                   type="text"
                   id="cardholder"
                   name="cardholder"
@@ -145,10 +219,16 @@ const Payment = () => {
               <div className="flex">
                 <div className="relative w-7/12 flex-shrink-0">
                   <input
-                    {...register("card-no", { required: true })}
+                    {...register("cardno", { required: true })}
+                    onChange={(e) =>
+                      setPayment((prev) => ({
+                        ...prev,
+                        cardNo: e.target.value,
+                      }))
+                    }
                     type="text"
                     id="card-no"
-                    name="card-no"
+                    name="cardno"
                     className="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                     placeholder="xxxx-xxxx-xxxx-xxxx"
                   />
@@ -167,23 +247,45 @@ const Payment = () => {
                   </div>
                 </div>
                 <input
-                  {...register("credit-expiry", { required: true })}
+                  {...register("creditexpiry", { required: true })}
+                  onChange={(e) =>
+                    setPayment((prev) => ({
+                      ...prev,
+                      cardExpiry: e.target.value,
+                    }))
+                  }
                   type="text"
-                  name="credit-expiry"
+                  name="creditexpiry"
                   className="w-full rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="MM/YY"
                 />
                 <input
-                  {...register("credit-cvc", { required: true })}
+                  {...register("creditcvc", { required: true })}
+                  onChange={(e) =>
+                    setPayment((prev) => ({
+                      ...prev,
+                      cardCVC: e.target.value,
+                    }))
+                  }
                   type="text"
-                  name="credit-cvc"
+                  name="creditcvc"
                   className="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="CVC"
                 />
               </div>
-              {errors.name && (
+              {errors.cardno && (
                 <p className="block text-red-500 text-sm mt-2 ml-3">
-                  *Name is required
+                  *Card number is required
+                </p>
+              )}
+              {errors.creditexpiry && (
+                <p className="block text-red-500 text-sm mt-2 ml-3">
+                  *Card expiry is required
+                </p>
+              )}
+              {errors.creditcvc && (
+                <p className="block text-red-500 text-sm mt-2 ml-3">
+                  *Card CVC is required
                 </p>
               )}
               <label
@@ -195,10 +297,16 @@ const Payment = () => {
               <div className="flex flex-col sm:flex-row">
                 <div className="relative flex-shrink-0 sm:w-7/12">
                   <input
-                    {...register("billing-address", { required: true })}
+                    {...register("billingaddress", { required: true })}
+                    onChange={(e) =>
+                      setPayment((prev) => ({
+                        ...prev,
+                        billingAddress: e.target.value,
+                      }))
+                    }
                     type="text"
                     id="billing-address"
-                    name="billing-address"
+                    name="billingaddress"
                     className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                     placeholder="Street Address"
                   />
@@ -212,7 +320,7 @@ const Payment = () => {
                 </div>
                 <select
                   type="text"
-                  name="billing-state"
+                  name="billingstate"
                   className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                 >
                   <option value="State">State</option>
@@ -222,13 +330,29 @@ const Payment = () => {
                   <option value="State">Ohio</option>
                 </select>
                 <input
-                  {...register("billing-zip", { required: true })}
+                  {...register("billingzip", { required: true })}
+                  onChange={(e) =>
+                    setPayment((prev) => ({
+                      ...prev,
+                      billingZip: e.target.value,
+                    }))
+                  }
                   type="text"
-                  name="billing-zip"
+                  name="billingzip"
                   className="flex-shrink-0 rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none sm:w-1/6 focus:z-10 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="ZIP"
                 />
               </div>
+              {errors.billingaddress && (
+                <p className="block text-red-500 text-sm mt-2 ml-3">
+                  *Billing address is required
+                </p>
+              )}
+              {errors.billingzip && (
+                <p className="block text-red-500 text-sm mt-2 ml-3">
+                  *Billing zip is required
+                </p>
+              )}
               <div className="mt-6 border-t border-b py-2">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium text-gray-900">Subtotal</p>
