@@ -1,21 +1,8 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import HashLoader from "react-spinners/HashLoader";
 
 import {
   ChevronDownIcon,
@@ -58,6 +45,7 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [checkHome, setCheckHome] = useHome();
   const [searchedProduct, setSearchedProduct] = useSearch();
+  const [isLoading, setIsLoading] = useState(true);
 
   const categoryBolean = [
     { value: "Bags", check: bags },
@@ -85,7 +73,7 @@ export default function Home() {
       const { data } = await axios.get(
         "https://penguin-alpha.vercel.app/api/products/all"
       );
-
+      setIsLoading(false);
       setProducts(data.products);
       let fetchingCategoroy = [];
       console.log(data.products);
@@ -348,31 +336,46 @@ export default function Home() {
                       </Disclosure>
                     </form>
 
-                    {/* Product grid */}
-                    <div className="col-span-1 lg:col-span-3">
-                      {bags || watches || glasses
-                        ? categoryBolean.map((category) => {
-                            return category.check ? (
-                              <Card
-                                products={products.filter(
-                                  (item) => item.category === category.value
-                                )}
-                                productCategory={category.value}
-                              />
-                            ) : null;
-                          })
-                        : productSet.map((category) => (
-                            <>
-                              {}
-                              <Card
-                                products={products.filter(
-                                  (item) => item.category === category
-                                )}
-                                productCategory={category}
-                              />
-                            </>
-                          ))}
-                    </div>
+                    {isLoading ? (
+                      <div className="h-screen lg:h-[73vh]">
+                        <div className="flex justify-center items-center mt-16 lg:flex lg:justify-center lg:w-full lg:ml-36 lg:mt-16">
+                          <HashLoader
+                            color="#8B5CF6"
+                            loading={isLoading}
+                            height={50}
+                            width={8}
+                            radius={2}
+                            margin={2}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      //{/* Product grid */}
+                      <div className="col-span-1 lg:col-span-3">
+                        {bags || watches || glasses
+                          ? categoryBolean.map((category) => {
+                              return category.check ? (
+                                <Card
+                                  products={products.filter(
+                                    (item) => item.category === category.value
+                                  )}
+                                  productCategory={category.value}
+                                />
+                              ) : null;
+                            })
+                          : productSet.map((category) => (
+                              <>
+                                {}
+                                <Card
+                                  products={products.filter(
+                                    (item) => item.category === category
+                                  )}
+                                  productCategory={category}
+                                />
+                              </>
+                            ))}
+                      </div>
+                    )}
                   </div>
                 </section>
               </main>
