@@ -14,7 +14,7 @@ const Cart = () => {
   let auth = JSON.parse(authString);
 
   const handleCart = async (product_id, user_id, price, quantity) => {
-    axios.put("http://localhost:8080/api/cart", {
+    axios.put("https://penguin-alpha.vercel.app/api/cart", {
       product_id,
       user_id,
       quantity,
@@ -44,9 +44,12 @@ const Cart = () => {
 
   const getAllCarts = async () => {
     try {
-      const { data } = await axios.post("http://localhost:8080/api/all-carts", {
-        user_id: auth?.user._id,
-      });
+      const { data } = await axios.post(
+        "https://penguin-alpha.vercel.app/api/all-carts",
+        {
+          user_id: auth?.user._id,
+        }
+      );
       setIsLoading(false);
       setCarts(data.carts);
     } catch (error) {
@@ -56,10 +59,13 @@ const Cart = () => {
 
   const handleDeleteCart = async (product_id, user_id) => {
     console.log("deleted");
-    const { data } = await axios.post("http://localhost:8080/api/delete-cart", {
-      product_id: product_id,
-      user_id: user_id,
-    });
+    const { data } = await axios.post(
+      "https://penguin-alpha.vercel.app/api/delete-cart",
+      {
+        product_id: product_id,
+        user_id: user_id,
+      }
+    );
     console.log("hello");
   };
 
