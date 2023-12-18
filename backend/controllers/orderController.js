@@ -24,13 +24,49 @@ export const insertManyOrdersController = async (req, res) => {
   }
 };
 
-export const getOrderController = async (req, res) => {
+export const getAllOrderController = async (req, res) => {
   try {
     const { user_id } = req.body;
 
     const orders = await orderModel
       .find({
         user_id: user_id,
+      })
+      .exec();
+
+    if (orders.length > 0) {
+      res.status(200).send({
+        success: true,
+
+        message: "All orders ",
+        orders,
+      });
+    } else {
+      res.status(200).send({
+        success: false,
+
+        message: "empty orders ",
+        orders,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Erorr in getting orders",
+      error: error.message,
+    });
+  }
+};
+
+export const getSingleOrderController = async (req, res) => {
+  try {
+    const { user_id, product_id } = req.body;
+
+    const orders = await orderModel
+      .find({
+        user_id: user_id,
+        product_id: product_id,
       })
       .exec();
 

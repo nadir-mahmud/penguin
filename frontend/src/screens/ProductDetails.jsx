@@ -48,7 +48,7 @@ const ProductDetails = () => {
   const getOrders = async () => {
     try {
       const { data } = await axios.post(
-        "https://penguin-alpha.vercel.app/api/orders",
+        "https://penguin-alpha.vercel.app/api/order",
         {
           product_id: state._id,
           user_id: auth?.user._id,

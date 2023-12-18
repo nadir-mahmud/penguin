@@ -16,7 +16,7 @@ const Order = ({ user_id }) => {
   const getAllOrders = async () => {
     try {
       const { data } = await axios.post(
-        "https://penguin-alpha.vercel.app/api/orders",
+        "https://penguin-alpha.vercel.app/api/orders/all",
         {
           user_id: auth?.user._id,
         }
