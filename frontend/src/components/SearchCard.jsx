@@ -14,7 +14,7 @@ const SearchCard = ({ products, productCategory }) => {
               >
                 <div className="aspect-h-1 aspect-w-1 w-full h-72  overflow-hidden rounded-md  lg:bg-purple-200  lg:aspect-none group-hover:opacity-75 lg:h-56">
                   <img
-                    src="/images/penguin.png"
+                    src={product.photo}
                     alt="h"
                     className="h-full w-full bg-gray-200 object-fit object-center lg:h-full lg:w-full"
                   />
